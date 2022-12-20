@@ -1,0 +1,3 @@
+﻿  main.cpp
+C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(228,59): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  BulkRunner.vcxproj -> C:\Users\Nate\source\repos\BulkRunner\x64\Debug\BulkRunner.exe
