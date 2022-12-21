@@ -1,3 +1,46 @@
 ﻿  main.cpp
-C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(228,59): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(36,37): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(44,37): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(55,92): warning C4244: 'argument': conversion from '_Ty' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+          and
+          [
+              _Ty=int
+          ]
+C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(79,47): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(92,47): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(105,49): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(171,32): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(176,32): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(185,32): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(188,36): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(193,36): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(216,33): warning C4244: 'argument': conversion from 'int' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
   BulkRunner.vcxproj -> C:\Users\Nate\source\repos\BulkRunner\x64\Debug\BulkRunner.exe

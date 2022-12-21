@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+*.ipch
+.vs/BulkRunner/v17/ipch/AutoPCH/9d662c4dc2e13e74/MAIN.ipch
+*.ipch
