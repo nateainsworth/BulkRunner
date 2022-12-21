@@ -41,19 +41,19 @@ struct BulkResults
 
 class Worker {
 	public:
-        Worker(std::stringstream& resultStream);
+        Worker(std::stringstream& resultStream, int& readers, int& writers, int& seconds);
 
 	private:
 
-        void CreateChildProcess(void);
+        void CreateChildProcess();
         void ReadFromPipe(std::stringstream& resultStream);
         void ErrorExit(PTSTR);
         
 
 
-		LPCTSTR filePath = TEXT("C:/Users/Nate/Desktop/CapsTesting/ReferenceTCPClientv3.0.exe");//"C:/Users/Nate/Desktop/CapsTesting/ProtocolVerifier.exe");//"C:/Users/Nate/Documents/GitHub/CapsClient/x64/Debug/TCPClient.exe");//"C:/Users/Nate/Documents/GitHub/Caps/x64/Release/TCPServerMutithreaded.exe");
+		LPCSTR filePath = "C:/Users/Nate/Desktop/CapsTesting/ReferenceTCPClientv3.0.exe";//"C:/Users/Nate/Desktop/CapsTesting/ProtocolVerifier.exe");//"C:/Users/Nate/Documents/GitHub/CapsClient/x64/Debug/TCPClient.exe");//"C:/Users/Nate/Documents/GitHub/Caps/x64/Release/TCPServerMutithreaded.exe");
 		LPCTSTR createFilePath = TEXT("C:/Users/Nate/Desktop/test.txt");
-
+        //LPWSTR createFilePath = 'C:/Users/Nate/Desktop/test.txt';
 
 		HANDLE g_hChildStd_IN_Rd = NULL;
 		HANDLE g_hChildStd_IN_Wr = NULL;

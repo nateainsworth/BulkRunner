@@ -13,8 +13,16 @@ std::vector<float> getDataFromLine(std::string line);
 std::string threadHeaders(int& readers, int& writers);
 std::vector<std::string> printThreadResults(int& readers, int& writers, int& seconds, BulkResults& testResult);
 
+LPCTSTR serverPath = TEXT("C:/Users/Nate/Documents/GitHub/Caps/x64/Release/TCPServerMutithreaded.exe");
+
+
+
+void startup(LPCTSTR lpApplicationName);
+
 int main(int argc, char* argv[])
 {
+
+
 
     std::cout << argv[0];
     
@@ -22,13 +30,16 @@ int main(int argc, char* argv[])
     int writers = 5;
     int seconds = 10;
     int iterations = 10;
+
+    
     std::string combo = "rClient_rServer";
 
 
     for (unsigned int it = 0; it < iterations; it++) {
-    
+        startup(serverPath);
+
         std::stringstream resultStream;
-        Worker worker(resultStream);
+        Worker worker(resultStream, readers, writers, seconds);
 
 
         BulkResults testResult;
@@ -133,7 +144,7 @@ int main(int argc, char* argv[])
 
         std::ofstream csvFile;
         std::string fileName = "C:/Users/Nate/Desktop/" + combo + "_r" + std::to_string(readers) + "_w" + std::to_string(writers) + ".csv";
-        csvFile.open("fileName", std::ios::app);
+        csvFile.open(fileName, std::ios::app);
         csvFile << "Readers:," << readers << ",\n";
         csvFile << "Writers:," << writers << ",\n";
         csvFile << ",,\n";
@@ -173,6 +184,8 @@ int main(int argc, char* argv[])
 
     return 0;
 }
+
+
 
 std::string threadHeaders(int& readers, int& writers) {
     std::string tableHeader = ",";
@@ -228,4 +241,35 @@ std::vector<float> getDataFromLine(std::string line) {
         word = "";
     }
     return intValues;
+}
+
+
+// startup function taken from (Jona, 2013) https://stackoverflow.com/questions/15435994/how-do-i-open-an-exe-from-another-c-exe
+void startup(LPCTSTR lpApplicationName)
+{
+    // additional information
+    STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+
+    // set the size of the structures
+    ZeroMemory(&si, sizeof(si));
+    si.cb = sizeof(si);
+    ZeroMemory(&pi, sizeof(pi));
+
+    // start the program up
+    CreateProcess(
+        lpApplicationName,   // the path
+        NULL,//argv[1],        // Command line
+        NULL,           // Process handle not inheritable
+        NULL,           // Thread handle not inheritable
+        FALSE,          // Set handle inheritance to FALSE
+        CREATE_NEW_CONSOLE,//0,              // No creation flags
+        NULL,           // Use parent's environment block
+        NULL,           // Use parent's starting directory 
+        &si,            // Pointer to STARTUPINFO structure
+        &pi             // Pointer to PROCESS_INFORMATION structure (removed extra parentheses)
+    );
+    // Close process and thread handles. 
+    CloseHandle(pi.hProcess);
+    CloseHandle(pi.hThread);
 }

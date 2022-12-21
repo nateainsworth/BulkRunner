@@ -1,11 +1,14 @@
 #include "worker.h"
 
-wchar_t cmdArgs[] = L"C:/Users/Nate/Desktop/CapsTesting/ReferenceTCPClientv3.0.exe 127.0.0.1 5 5 10 0";//"C:/Users/Nate/Desktop/CapsTesting/ProtocolVerifier.exe 127.0.0.1";
+LPSTR args;
 
-Worker::Worker(std::stringstream& resultStream)
+Worker::Worker(std::stringstream& resultStream, int& readers, int& writers, int& seconds)
 {
-    //int argc, TCHAR* argv[1]
-    //std::regex re("([0-9]*)");//("(?<=POST thread)(.*)(?=sent)");//"(?:POST)([0-9]*)");//"(?<=POST)(.*)(?\=sent)");//
+    int test = 5;
+
+    std::string cmdLine = "C:/Users/Nate/Desktop/CapsTesting/ReferenceTCPClientv3.0.exe 127.0.0.1 " + std::to_string(writers) + " " + std::to_string(readers) + " " + std::to_string(seconds) + " " + " 0 ";
+ 
+    args = const_cast<char*>(cmdLine.c_str());
 
     SECURITY_ATTRIBUTES saAttr;
 
@@ -59,7 +62,7 @@ void Worker::CreateChildProcess()
 {
     TCHAR szCmdline[] = TEXT("child");
     PROCESS_INFORMATION piProcInfo;
-    STARTUPINFO siStartInfo;
+    STARTUPINFOA siStartInfo;
     BOOL bSuccess = FALSE;
 
     // Set up members of the PROCESS_INFORMATION structure. 
@@ -69,17 +72,17 @@ void Worker::CreateChildProcess()
     // Set up members of the STARTUPINFO structure. 
     // This structure specifies the STDIN and STDOUT handles for redirection.
 
-    ZeroMemory(&siStartInfo, sizeof(STARTUPINFO));
-    siStartInfo.cb = sizeof(STARTUPINFO);
+    ZeroMemory(&siStartInfo, sizeof(STARTUPINFOA));
+    siStartInfo.cb = sizeof(STARTUPINFOA);
     siStartInfo.hStdError = g_hChildStd_OUT_Wr;
     siStartInfo.hStdOutput = g_hChildStd_OUT_Wr;
     siStartInfo.hStdInput = g_hChildStd_IN_Rd;
     siStartInfo.dwFlags |= STARTF_USESTDHANDLES;
 
 
-    bSuccess = CreateProcess(
+    bSuccess = CreateProcessA(
         filePath,   // the path
-        cmdArgs,//NULL,//argv[1],        // Command line
+        args,//NULL,//argv[1],        // Command line
         NULL,           // Process handle not inheritable
         NULL,           // Thread handle not inheritable
         TRUE,          // Set handle inheritance to FALSE
