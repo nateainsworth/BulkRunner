@@ -1,0 +1,47 @@
+﻿  main.cpp
+  The contents of <filesystem> are available only with C++17 or later.
+C:\Users\c0042245\OneDrive - Sheffield Hallam University\VSCode\BulkRunner\BulkRunner\main.cpp(101,49): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+C:\Users\c0042245\OneDrive - Sheffield Hallam University\VSCode\BulkRunner\BulkRunner\main.cpp(109,49): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+C:\Users\c0042245\OneDrive - Sheffield Hallam University\VSCode\BulkRunner\BulkRunner\main.cpp(120,104): warning C4244: 'argument': conversion from '_Ty' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+          and
+          [
+              _Ty=int
+          ]
+C:\Users\c0042245\OneDrive - Sheffield Hallam University\VSCode\BulkRunner\BulkRunner\main.cpp(144,59): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+C:\Users\c0042245\OneDrive - Sheffield Hallam University\VSCode\BulkRunner\BulkRunner\main.cpp(157,59): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+C:\Users\c0042245\OneDrive - Sheffield Hallam University\VSCode\BulkRunner\BulkRunner\main.cpp(170,61): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+C:\Users\c0042245\OneDrive - Sheffield Hallam University\VSCode\BulkRunner\BulkRunner\main.cpp(297,33): warning C4244: 'argument': conversion from 'int' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+  Generating code
+  2 of 809 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  BulkRunner.vcxproj -> C:\Users\c0042245\OneDrive - Sheffield Hallam University\VSCode\BulkRunner\x64\Release\BulkRunner.exe
