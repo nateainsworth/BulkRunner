@@ -14,7 +14,7 @@ std::string threadHeaders(int& readers, int& writers);
 std::vector<std::string> printThreadResults(int& readers, int& writers, int& seconds, BulkResults& testResult);
 
 LPCTSTR serverPath;// = TEXT("C:/Users/Nate/Documents/GitHub/Caps/x64/Release/TCPServerMutithreaded.exe");
-std::string clientPath;
+
 
 
 void startup(LPCTSTR lpApplicationName);
@@ -31,195 +31,200 @@ int main(int argc, char* argv[])
 
     std::string selectedServer = "";
     std::string selectedClient = "";
+    std::string exportName = "";
+
+
+    std::string runnerPath = argv[0];
+    int position = runnerPath.find_last_of("\\");
+    std::string dirPath = runnerPath.substr(0, position);
 
     switch (atoi(argv[1])) {
     case 1:
-        selectedServer = "\\TCPServerMutithreaded.exe";
-        selectedClient = "\\TCPClient.exe";
+        selectedServer = dirPath + "\\TCPServerMutithreaded.exe";
+        selectedClient = dirPath + "\\TCPClient.exe";
+        exportName = dirPath + "myClient_myServer";
         break;
     case 2:
-        selectedServer = "\\ReferenceTCPServerv2.0.exe";
-        selectedClient = "\\ReferenceTCPClientv3.0.exe";
+        selectedServer = dirPath + "\\ReferenceTCPServerv2.0.exe";
+        selectedClient = dirPath + "\\ReferenceTCPClientv3.0.exe";
+        exportName = dirPath + "rClient_rServer";
         break;
     case 3:
-        selectedServer = "\\TCPServerMutithreaded.exe";
-        selectedClient = "\\ReferenceTCPClientv3.0.exe";
+        selectedServer = dirPath + "\\TCPServerMutithreaded.exe";
+        selectedClient = dirPath + "\\ReferenceTCPClientv3.0.exe";
+        exportName = dirPath + "rClient_myServer";
         break;
-        selectedServer = "\\ReferenceTCPServerv2.0.exe";
-        selectedClient = "\\TCPClient.exe";
+        selectedServer = dirPath + "\\ReferenceTCPServerv2.0.exe";
+        selectedClient = dirPath + "\\TCPClient.exe";
+        exportName = dirPath + "myClient_rServer";
         break;
     default:
         std::cout << "No server or client selected";
     }
     
 
-    std::string runnerPath = argv[0];
-    int position = runnerPath.find_last_of("\\");
-    std::string dirPath = runnerPath.substr(0, position);
-
-    std::string fullServerPath = dirPath + selectedServer;
-    clientPath = dirPath + selectedClient;
-
-    std::vector<TCHAR> convertedPath(fullServerPath.begin(), fullServerPath.end());
-
-
+    std::vector<TCHAR> convertedPath(selectedServer.begin(), selectedServer.end());
     serverPath = &convertedPath[0];
     
 
-    int readers = 5;
-    int writers = 5;
-    int seconds = 10;
-    int iterations = 10;
+    unsigned int readers = 3;
+    unsigned int writers = 3;
+    unsigned int seconds = 10;
+    unsigned int iterations = 10;
 
-    
-    std::string combo = "rClient_rServer";
 
 
     for (unsigned int it = 0; it < iterations; it++) {
-        startup(serverPath);
 
-        std::stringstream resultStream;
-        Worker worker(resultStream, readers, writers, seconds, clientPath);
+        for (unsigned int reader = 1; reader < readers + 1; reader++) {
+            for (unsigned int writer = 1; writer < writers + 1; writer++) {
+        
+                startup(serverPath);
 
-
-        BulkResults testResult;
-
-        std::string threadType;
-        int threadNumber = 0;
-        std::string line;
-        while (std::getline(resultStream, line)) {
+                std::stringstream resultStream;
+                Worker worker(resultStream, reader, writer, seconds, selectedClient, exportName);
 
 
-            if (int found = line.find("POST thread") != -1) {
-                std::vector<float> intData = getDataFromLine(line);
-                threadNumber = intData[0];
-                threadType = "writer";
-                continue;
+                BulkResults testResult;
 
-            }
-
-            if (int found = line.find("READ thread") != -1) {
-                std::vector<float> intData = getDataFromLine(line);
-                threadNumber = intData[0];
-                threadType = "reader";
-
-                continue;
-
-            }
-
-            if (int found = line.find("Second") != -1) {
-                std::vector<float> intData = getDataFromLine(line);
-
-                BulkThreadResults results;
-                testResult.threadResults[threadType][threadNumber].requests.push_back(intData[1]);//.push_back(intData[0]);
+                std::string threadType;
+                int threadNumber = 0;
+                std::string line;
+                while (std::getline(resultStream, line)) {
 
 
-                continue;
+                    if (int found = line.find("POST thread") != -1) {
+                        std::vector<float> intData = getDataFromLine(line);
+                        threadNumber = intData[0];
+                        threadType = "writer";
+                        continue;
 
-            }
+                    }
 
-            if (int found = line.find("Average:") != -1) {
-                std::vector<float> intData = getDataFromLine(line);
+                    if (int found = line.find("READ thread") != -1) {
+                        std::vector<float> intData = getDataFromLine(line);
+                        threadNumber = intData[0];
+                        threadType = "reader";
 
-                testResult.threadResults[threadType][threadNumber].averages.push_back(intData[0]);//.requests.push_back(intData[1]);
-                continue;
-            }
+                        continue;
 
-            if (int found = line.find("Runtime:") != -1) {
-                std::vector<float> intData = getDataFromLine(line);
+                    }
 
-                testResult.threadResults[threadType][threadNumber].runtimes.push_back(intData[0]);
-                continue;
-            }
+                    if (int found = line.find("Second") != -1) {
+                        std::vector<float> intData = getDataFromLine(line);
 
-            if (int found = line.find("Total poster requests:") != -1) {
-                std::vector<float> intData = getDataFromLine(line);
-
-                testResult.totalPoster = intData[0];
-                continue;
-            }
-
-            if (int found = line.find("Average requests per poster thread:") != -1) {
-                std::vector<float> intData = getDataFromLine(line);
-
-                testResult.averagePosterReqs = intData[0];
-                continue;
-            }
-
-            if (int found = line.find("Total reader requests:") != -1) {
-                std::vector<float> intData = getDataFromLine(line);
-                testResult.totalReader = intData[0];
-                continue;
-            }
-
-            if (int found = line.find("Average requests per reader thread:") != -1) {
-                std::vector<float> intData = getDataFromLine(line);
-                testResult.averageReaderReqs = intData[0];
-
-                continue;
-            }
-
-            if (int found = line.find("Total requests:") != -1) {
-                std::vector<float> intData = getDataFromLine(line);
-                testResult.totalRequests = intData[0];
-                continue;
-            }
-
-            if (int found = line.find("Average requests per thread:") != -1) {
-                std::vector<float> intData = getDataFromLine(line);
-                testResult.averagePerThread = intData[0];
-                continue;
-            }
-
-            //TODO CHANGE TO FLOAT LESS COSTLY THAN DOUBLE 
-            if (int found = line.find("Average requests per thread per second:") != -1) {
-                std::vector<float> intData = getDataFromLine(line);
-                testResult.averagePerSecond = intData[0];
-                continue;
-            }
+                        BulkThreadResults results;
+                        testResult.threadResults[threadType][threadNumber].requests.push_back(intData[1]);//.push_back(intData[0]);
 
 
-        }
-        std::cout << "Done extracting results";
+                        continue;
 
-        std::ofstream csvFile;
-        std::string fileName = "C:/Users/Nate/Desktop/" + combo + "_r" + std::to_string(readers) + "_w" + std::to_string(writers) + ".csv";
-        csvFile.open(fileName, std::ios::app);
-        csvFile << "Readers:," << readers << ",\n";
-        csvFile << "Writers:," << writers << ",\n";
-        csvFile << ",,\n";
-        csvFile << "Run" << std::to_string(it + 1 ) << " / " << std::to_string(iterations) << ",,\n";
+                    }
+
+                    if (int found = line.find("Average:") != -1) {
+                        std::vector<float> intData = getDataFromLine(line);
+
+                        testResult.threadResults[threadType][threadNumber].averages.push_back(intData[0]);//.requests.push_back(intData[1]);
+                        continue;
+                    }
+
+                    if (int found = line.find("Runtime:") != -1) {
+                        std::vector<float> intData = getDataFromLine(line);
+
+                        testResult.threadResults[threadType][threadNumber].runtimes.push_back(intData[0]);
+                        continue;
+                    }
+
+                    if (int found = line.find("Total poster requests:") != -1) {
+                        std::vector<float> intData = getDataFromLine(line);
+
+                        testResult.totalPoster = intData[0];
+                        continue;
+                    }
+
+                    if (int found = line.find("Average requests per poster thread:") != -1) {
+                        std::vector<float> intData = getDataFromLine(line);
+
+                        testResult.averagePosterReqs = intData[0];
+                        continue;
+                    }
+
+                    if (int found = line.find("Total reader requests:") != -1) {
+                        std::vector<float> intData = getDataFromLine(line);
+                        testResult.totalReader = intData[0];
+                        continue;
+                    }
+
+                    if (int found = line.find("Average requests per reader thread:") != -1) {
+                        std::vector<float> intData = getDataFromLine(line);
+                        testResult.averageReaderReqs = intData[0];
+
+                        continue;
+                    }
+
+                    if (int found = line.find("Total requests:") != -1) {
+                        std::vector<float> intData = getDataFromLine(line);
+                        testResult.totalRequests = intData[0];
+                        continue;
+                    }
+
+                    if (int found = line.find("Average requests per thread:") != -1) {
+                        std::vector<float> intData = getDataFromLine(line);
+                        testResult.averagePerThread = intData[0];
+                        continue;
+                    }
+
+                    //TODO CHANGE TO FLOAT LESS COSTLY THAN DOUBLE 
+                    if (int found = line.find("Average requests per thread per second:") != -1) {
+                        std::vector<float> intData = getDataFromLine(line);
+                        testResult.averagePerSecond = intData[0];
+                        continue;
+                    }
+
+
+                }
+                std::cout << "Done extracting results";
+
+                std::ofstream csvFile;
+                std::string fileName = exportName + "_r" + std::to_string(readers) + "_w" + std::to_string(writers) + ".csv";
+                csvFile.open(fileName, std::ios::app);
+                csvFile << "Readers:," << readers << ",\n";
+                csvFile << "Writers:," << writers << ",\n";
+                csvFile << ",,\n";
+                csvFile << "Run" << std::to_string(it + 1 ) << " / " << std::to_string(iterations) << ",,\n";
 
 
 
-        //csvFile << tableHeader;
-        csvFile << threadHeaders(readers, writers) << ",\n";
-        //std::string* tableHeader = new std::string[seconds];
+                //csvFile << tableHeader;
+                csvFile << threadHeaders(reader, writer) << ",\n";
+                //std::string* tableHeader = new std::string[seconds];
     
-        std::vector<std::string> threadResults = printThreadResults(readers, writers, seconds, testResult);
+                std::vector<std::string> threadResults = printThreadResults(reader, writer, seconds, testResult);
 
 
-        for (unsigned int i = 0; i < threadResults.size(); i++) {
-            csvFile << threadResults[i] << "\n";
-        };
+                for (unsigned int i = 0; i < threadResults.size(); i++) {
+                    csvFile << threadResults[i] << "\n";
+                };
 
 
-        csvFile << ",,\n";
-        csvFile << ",,\n";
-        csvFile << "Total poster requests:,"<< testResult.totalPoster << ",\n";
-        csvFile << "Average requests per poster thread:,"<< testResult.averagePosterReqs << ",\n";
-        csvFile << "Total reader requests:,"<< testResult.totalReader << ",\n";
-        csvFile << "Average requests per reader thread:,"<< testResult.averageReaderReqs << ",\n";
-        csvFile << "Total requests:,"<< testResult.totalRequests << ",\n";
-        csvFile << "Average requests per thread:," << testResult.averagePerThread << ",\n";
-        csvFile << "Average requests per thread per second:,"<< testResult.averagePerSecond << ",\n";
+                csvFile << ",,\n";
+                csvFile << ",,\n";
+                csvFile << "Total poster requests:,"<< testResult.totalPoster << ",\n";
+                csvFile << "Average requests per poster thread:,"<< testResult.averagePosterReqs << ",\n";
+                csvFile << "Total reader requests:,"<< testResult.totalReader << ",\n";
+                csvFile << "Average requests per reader thread:,"<< testResult.averageReaderReqs << ",\n";
+                csvFile << "Total requests:,"<< testResult.totalRequests << ",\n";
+                csvFile << "Average requests per thread:," << testResult.averagePerThread << ",\n";
+                csvFile << "Average requests per thread per second:,"<< testResult.averagePerSecond << ",\n";
 
-        csvFile << ",,\n";
-        csvFile << ",,\n";
-        csvFile << ",,\n";
+                csvFile << ",,\n";
+                csvFile << ",,\n";
+                csvFile << ",,\n";
 
-        csvFile.close();
-    };
+                csvFile.close();
+            };
+        }
+    }
 
 
     return 0;
@@ -227,7 +232,7 @@ int main(int argc, char* argv[])
 
 
 
-std::string threadHeaders(int& readers, int& writers) {
+std::string threadHeaders(unsigned int& readers, unsigned int& writers) {
     std::string tableHeader = ",";
 
     for (unsigned int w = 0; w < writers; w++) {
@@ -242,7 +247,7 @@ std::string threadHeaders(int& readers, int& writers) {
     return tableHeader;
 }
 
-std::vector<std::string> printThreadResults(int& readers, int& writers, int& seconds, BulkResults& testResult) {
+std::vector<std::string> printThreadResults(unsigned int& readers, unsigned int& writers, unsigned int& seconds, BulkResults& testResult) {
     std::vector<std::string> threadResults(seconds);
     for (unsigned int s = 0; s < seconds; s++) {
         threadResults[s] = "Second " + std::to_string(s) + ",";

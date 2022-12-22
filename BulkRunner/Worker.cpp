@@ -2,13 +2,13 @@
 
 LPSTR args;
 
-Worker::Worker(std::stringstream& resultStream, int& readers, int& writers, int& seconds, std::string& clientPath)
-{
+Worker::Worker(std::stringstream& resultStream, unsigned int& readers, unsigned int& writers,unsigned int& seconds, std::string& clientPath, std::string& exportName){
     int test = 5;
 
     filePath = clientPath.c_str();
     std::string cmdLine = clientPath + " 127.0.0.1 " + std::to_string(writers) + " " + std::to_string(readers) + " " + std::to_string(seconds) + " " + " 0 ";
- 
+    std::string exportFile = exportName + "_r" + std::to_string(readers) + "_w" + std::to_string(writers) + ".txt";
+    //createFilePath 
     args = const_cast<char*>(cmdLine.c_str());
 
     SECURITY_ATTRIBUTES saAttr;

@@ -41,7 +41,7 @@ struct BulkResults
 
 class Worker {
 	public:
-        Worker(std::stringstream& resultStream, int& readers, int& writers, int& seconds, std::string& clientPath);
+        Worker(std::stringstream& resultStream,unsigned int& readers,unsigned int& writers,unsigned int& seconds, std::string& clientPath, std::string& exportName);
 
 	private:
 
@@ -51,8 +51,8 @@ class Worker {
         
 
 
-		LPCSTR filePath = "C:/Users/Nate/Desktop/CapsTesting/ReferenceTCPClientv3.0.exe";//"C:/Users/Nate/Desktop/CapsTesting/ProtocolVerifier.exe");//"C:/Users/Nate/Documents/GitHub/CapsClient/x64/Debug/TCPClient.exe");//"C:/Users/Nate/Documents/GitHub/Caps/x64/Release/TCPServerMutithreaded.exe");
-		LPCTSTR createFilePath = TEXT("C:/Users/Nate/Desktop/test.txt");
+		LPCSTR filePath = "";//"C:/Users/Nate/Desktop/CapsTesting/ProtocolVerifier.exe");//"C:/Users/Nate/Documents/GitHub/CapsClient/x64/Debug/TCPClient.exe");//"C:/Users/Nate/Documents/GitHub/Caps/x64/Release/TCPServerMutithreaded.exe");
+		LPCTSTR createFilePath = TEXT("");
         //LPWSTR createFilePath = 'C:/Users/Nate/Desktop/test.txt';
 
 		HANDLE g_hChildStd_IN_Rd = NULL;
