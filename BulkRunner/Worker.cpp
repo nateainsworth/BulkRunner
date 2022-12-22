@@ -2,11 +2,12 @@
 
 LPSTR args;
 
-Worker::Worker(std::stringstream& resultStream, int& readers, int& writers, int& seconds)
+Worker::Worker(std::stringstream& resultStream, int& readers, int& writers, int& seconds, std::string& clientPath)
 {
     int test = 5;
 
-    std::string cmdLine = "C:/Users/Nate/Desktop/CapsTesting/ReferenceTCPClientv3.0.exe 127.0.0.1 " + std::to_string(writers) + " " + std::to_string(readers) + " " + std::to_string(seconds) + " " + " 0 ";
+    filePath = clientPath.c_str();
+    std::string cmdLine = clientPath + " 127.0.0.1 " + std::to_string(writers) + " " + std::to_string(readers) + " " + std::to_string(seconds) + " " + " 0 ";
  
     args = const_cast<char*>(cmdLine.c_str());
 

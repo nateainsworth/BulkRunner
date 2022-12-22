@@ -13,8 +13,8 @@ std::vector<float> getDataFromLine(std::string line);
 std::string threadHeaders(int& readers, int& writers);
 std::vector<std::string> printThreadResults(int& readers, int& writers, int& seconds, BulkResults& testResult);
 
-LPCTSTR serverPath = TEXT("C:/Users/Nate/Documents/GitHub/Caps/x64/Release/TCPServerMutithreaded.exe");
-
+LPCTSTR serverPath;// = TEXT("C:/Users/Nate/Documents/GitHub/Caps/x64/Release/TCPServerMutithreaded.exe");
+std::string clientPath;
 
 
 void startup(LPCTSTR lpApplicationName);
@@ -22,10 +22,50 @@ void startup(LPCTSTR lpApplicationName);
 int main(int argc, char* argv[])
 {
 
+    /*
+        1: myClient : myServer
+        2: refClient : refServer
+        3: refClient : myServer
+        4: myClient : refServer
+    */
 
+    std::string selectedServer = "";
+    std::string selectedClient = "";
 
-    std::cout << argv[0];
+    switch (atoi(argv[1])) {
+    case 1:
+        selectedServer = "\\TCPServerMutithreaded.exe";
+        selectedClient = "\\TCPClient.exe";
+        break;
+    case 2:
+        selectedServer = "\\ReferenceTCPServerv2.0.exe";
+        selectedClient = "\\ReferenceTCPClientv3.0.exe";
+        break;
+    case 3:
+        selectedServer = "\\TCPServerMutithreaded.exe";
+        selectedClient = "\\ReferenceTCPClientv3.0.exe";
+        break;
+        selectedServer = "\\ReferenceTCPServerv2.0.exe";
+        selectedClient = "\\TCPClient.exe";
+        break;
+    default:
+        std::cout << "No server or client selected";
+    }
     
+
+    std::string runnerPath = argv[0];
+    int position = runnerPath.find_last_of("\\");
+    std::string dirPath = runnerPath.substr(0, position);
+
+    std::string fullServerPath = dirPath + selectedServer;
+    clientPath = dirPath + selectedClient;
+
+    std::vector<TCHAR> convertedPath(fullServerPath.begin(), fullServerPath.end());
+
+
+    serverPath = &convertedPath[0];
+    
+
     int readers = 5;
     int writers = 5;
     int seconds = 10;
@@ -39,7 +79,7 @@ int main(int argc, char* argv[])
         startup(serverPath);
 
         std::stringstream resultStream;
-        Worker worker(resultStream, readers, writers, seconds);
+        Worker worker(resultStream, readers, writers, seconds, clientPath);
 
 
         BulkResults testResult;

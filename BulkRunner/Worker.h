@@ -41,7 +41,7 @@ struct BulkResults
 
 class Worker {
 	public:
-        Worker(std::stringstream& resultStream, int& readers, int& writers, int& seconds);
+        Worker(std::stringstream& resultStream, int& readers, int& writers, int& seconds, std::string& clientPath);
 
 	private:
 
