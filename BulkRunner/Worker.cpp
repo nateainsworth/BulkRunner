@@ -7,7 +7,7 @@ Worker::Worker(std::stringstream& resultStream, unsigned int& readers, unsigned 
 
     filePath = clientPath.c_str();
     std::string cmdLine = clientPath + " 127.0.0.1 " + std::to_string(writers) + " " + std::to_string(readers) + " " + std::to_string(seconds) + " " + " 0 ";
-    std::string exportFile = exportName + "_r" + std::to_string(readers) + "_w" + std::to_string(writers) + ".txt";
+    exportTxtFile = exportName + "_r" + std::to_string(readers) + "_w" + std::to_string(writers) + ".txt";
     //createFilePath 
     args = const_cast<char*>(cmdLine.c_str());
 
@@ -140,7 +140,7 @@ void Worker::ReadFromPipe(std::stringstream& resultStream) {
         //}
         //bSuccess = WriteFile(hParentStdOut, chBuf, dwRead, &dwWritten, NULL);
         std::ofstream myfile;
-        myfile.open("C:/Users/Nate/Desktop/test2.txt", std::ios::app);
+        myfile.open(exportTxtFile, std::ios::app);
         myfile << writeLine.substr(0, dwRead + 1);
         myfile.close();
 

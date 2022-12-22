@@ -10,10 +10,10 @@
 
 std::vector<float> getDataFromLine(std::string line);
 
-std::string threadHeaders(int& readers, int& writers);
-std::vector<std::string> printThreadResults(int& readers, int& writers, int& seconds, BulkResults& testResult);
+std::string threadHeaders(unsigned int& readers,unsigned int& writers);
+std::vector<std::string> printThreadResults(unsigned int& readers,unsigned int& writers,unsigned int& seconds, BulkResults& testResult);
 
-LPCTSTR serverPath;// = TEXT("C:/Users/Nate/Documents/GitHub/Caps/x64/Release/TCPServerMutithreaded.exe");
+LPCTSTR serverPath = TEXT("C:/Users/c0042245/Downloads/TCPServerMutithreaded.exe");///ReferenceTCPServerv2.0.exe");//
 
 
 
@@ -34,29 +34,30 @@ int main(int argc, char* argv[])
     std::string exportName = "";
 
 
-    std::string runnerPath = argv[0];
-    int position = runnerPath.find_last_of("\\");
-    std::string dirPath = runnerPath.substr(0, position);
+    std::string runnerPath = "C:/Users/c0042245/Downloads";//"C:/Users/c0042245/OneDrive - Sheffield Hallam University/VSCode/BulkRunner/x64/Release";//argv[0];
+    //int position = runnerPath.find_last_of("\\");
+    std::string dirPath = runnerPath;//runnerPath.substr(0, position);
 
     switch (atoi(argv[1])) {
     case 1:
-        selectedServer = dirPath + "\\TCPServerMutithreaded.exe";
-        selectedClient = dirPath + "\\TCPClient.exe";
-        exportName = dirPath + "myClient_myServer";
+        selectedServer = dirPath + "/TCPServerMutithreaded.exe";
+        selectedClient = dirPath + "/TCPClient.exe";
+        exportName = dirPath + "/results/myClient_myServer";
         break;
     case 2:
-        selectedServer = dirPath + "\\ReferenceTCPServerv2.0.exe";
-        selectedClient = dirPath + "\\ReferenceTCPClientv3.0.exe";
-        exportName = dirPath + "rClient_rServer";
+        selectedServer = dirPath + "/ReferenceTCPServerv2.0.exe";
+        selectedClient = dirPath + "/ReferenceTCPClientv3.0.exe";
+        exportName = dirPath + "/results/rClient_rServer";
         break;
     case 3:
-        selectedServer = dirPath + "\\TCPServerMutithreaded.exe";
-        selectedClient = dirPath + "\\ReferenceTCPClientv3.0.exe";
-        exportName = dirPath + "rClient_myServer";
+        selectedServer = dirPath + "/TCPServerMutithreaded.exe";
+        selectedClient = dirPath + "/ReferenceTCPClientv3.0.exe";
+        exportName = dirPath + "/results/rClient_myServer";
         break;
-        selectedServer = dirPath + "\\ReferenceTCPServerv2.0.exe";
-        selectedClient = dirPath + "\\TCPClient.exe";
-        exportName = dirPath + "myClient_rServer";
+    case 4:
+        selectedServer = dirPath + "/ReferenceTCPServerv2.0.exe";
+        selectedClient = dirPath + "/TCPClient.exe";
+        exportName = dirPath + "/results/myClient_rServer";
         break;
     default:
         std::cout << "No server or client selected";
@@ -64,21 +65,23 @@ int main(int argc, char* argv[])
     
 
     std::vector<TCHAR> convertedPath(selectedServer.begin(), selectedServer.end());
-    serverPath = &convertedPath[0];
+    //serverPath = &convertedPath[0];
     
+    std::cout << "Server Path: \n" << serverPath << std::endl;
 
-    unsigned int readers = 3;
-    unsigned int writers = 3;
+    unsigned int readers = 5;
+    unsigned int writers = 5;
     unsigned int seconds = 10;
     unsigned int iterations = 10;
 
 
 
-    for (unsigned int it = 0; it < iterations; it++) {
+    
 
-        for (unsigned int reader = 1; reader < readers + 1; reader++) {
-            for (unsigned int writer = 1; writer < writers + 1; writer++) {
+    for (unsigned int reader = 1; reader < readers + 1; reader++) {
+        for (unsigned int writer = 1; writer < writers + 1; writer++) {
         
+            for (unsigned int it = 0; it < iterations; it++) {
                 startup(serverPath);
 
                 std::stringstream resultStream;
@@ -186,12 +189,12 @@ int main(int argc, char* argv[])
                 std::cout << "Done extracting results";
 
                 std::ofstream csvFile;
-                std::string fileName = exportName + "_r" + std::to_string(readers) + "_w" + std::to_string(writers) + ".csv";
+                std::string fileName = exportName + "_r" + std::to_string(reader) + "_w" + std::to_string(writer) + ".csv";
                 csvFile.open(fileName, std::ios::app);
-                csvFile << "Readers:," << readers << ",\n";
-                csvFile << "Writers:," << writers << ",\n";
+                csvFile << "Readers:," << reader << ",\n";
+                csvFile << "Writers:," << writer << ",\n";
                 csvFile << ",,\n";
-                csvFile << "Run" << std::to_string(it + 1 ) << " / " << std::to_string(iterations) << ",,\n";
+                csvFile << "Run " << std::to_string(it + 1 ) << " / " << std::to_string(iterations) << ",,\n";
 
 
 
@@ -248,17 +251,28 @@ std::string threadHeaders(unsigned int& readers, unsigned int& writers) {
 }
 
 std::vector<std::string> printThreadResults(unsigned int& readers, unsigned int& writers, unsigned int& seconds, BulkResults& testResult) {
-    std::vector<std::string> threadResults(seconds);
+    std::vector<std::string> threadResults(seconds );
+    threadResults.push_back("Average,");
+    threadResults.push_back("Runtime,");
     for (unsigned int s = 0; s < seconds; s++) {
         threadResults[s] = "Second " + std::to_string(s) + ",";
+        
 
         for (unsigned int w = 0; w < writers; w++) {
-            threadResults[s] += std::to_string(testResult.threadResults["reader"][w].requests[s]) + ",";
+            threadResults[s] += std::to_string(testResult.threadResults["writer"][w].requests[s]) + ",";
+            if (s == 0) {
+                threadResults[seconds] += std::to_string(testResult.threadResults["writer"][w].averages[0]) + ",";
+                threadResults[seconds + 1] += std::to_string(testResult.threadResults["writer"][w].runtimes[0]) + ",";
+            }
 
         }
 
         for (unsigned int r = 0; r < readers; r++) {
             threadResults[s] += std::to_string(testResult.threadResults["reader"][r].requests[s]) + ",";
+            if (s == 0) {
+                threadResults[seconds] += std::to_string(testResult.threadResults["reader"][r].averages[0]) + ",";
+                threadResults[seconds + 1] += std::to_string(testResult.threadResults["reader"][r].runtimes[0]) + ",";
+            }
         }
     }
     return threadResults;

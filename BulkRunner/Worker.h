@@ -49,6 +49,7 @@ class Worker {
         void ReadFromPipe(std::stringstream& resultStream);
         void ErrorExit(PTSTR);
         
+        std::string exportTxtFile;
 
 
 		LPCSTR filePath = "";//"C:/Users/Nate/Desktop/CapsTesting/ProtocolVerifier.exe");//"C:/Users/Nate/Documents/GitHub/CapsClient/x64/Debug/TCPClient.exe");//"C:/Users/Nate/Documents/GitHub/Caps/x64/Release/TCPServerMutithreaded.exe");
