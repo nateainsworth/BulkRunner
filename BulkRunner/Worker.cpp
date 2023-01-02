@@ -5,12 +5,13 @@ LPSTR args;
 Worker::Worker(std::stringstream& resultStream, unsigned int& readers, unsigned int& writers,unsigned int& seconds, std::string& clientPath, std::string& exportName){
     int test = 5;
 
+    //sets client path and client command line arguments
     filePath = clientPath.c_str();
     std::string cmdLine = clientPath + " 127.0.0.1 " + std::to_string(writers) + " " + std::to_string(readers) + " " + std::to_string(seconds) + " " + " 0 ";
     exportTxtFile = exportName + "_r" + std::to_string(readers) + "_w" + std::to_string(writers) + ".txt";
-    //createFilePath 
-    args = const_cast<char*>(cmdLine.c_str());
 
+    args = const_cast<char*>(cmdLine.c_str());
+    std::cout << "Text File to export to: " << exportTxtFile << std::endl;
     SECURITY_ATTRIBUTES saAttr;
 
     printf("\n->Start of parent execution.\n");
@@ -123,7 +124,6 @@ void Worker::ReadFromPipe(std::stringstream& resultStream) {
     // and write to the parent process's pipe for STDOUT. 
     // Stop when there is no more data. 
 
-
     DWORD dwRead, dwWritten;
     CHAR chBuf[BUFSIZE];
     BOOL bSuccess = FALSE;
@@ -134,11 +134,8 @@ void Worker::ReadFromPipe(std::stringstream& resultStream) {
         bSuccess = ReadFile(g_hChildStd_OUT_Rd, chBuf, BUFSIZE, &dwRead, NULL);
         if (!bSuccess || dwRead == 0) break;
         std::string writeLine = std::string(chBuf);
-        //int endLinePosition = writeLine.find_last_of('\n');
-        //if (endLinePosition != -1) {
-        //    writeLine[(endLinePosition + 1)] = '\0';
-        //}
-        //bSuccess = WriteFile(hParentStdOut, chBuf, dwRead, &dwWritten, NULL);
+
+        // write COUT to text file
         std::ofstream myfile;
         myfile.open(exportTxtFile, std::ios::app);
         myfile << writeLine.substr(0, dwRead + 1);

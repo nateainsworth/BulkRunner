@@ -26,7 +26,7 @@ struct BulkThreadResults
 
 struct BulkResults
 {
-    //BulkThreadResults threadResults;
+
     std::unordered_map<std::string, std::unordered_map<int, BulkThreadResults>> threadResults;
     int totalPoster;
     float averagePosterReqs;
@@ -52,9 +52,9 @@ class Worker {
         std::string exportTxtFile;
 
 
-		LPCSTR filePath = "";//"C:/Users/Nate/Desktop/CapsTesting/ProtocolVerifier.exe");//"C:/Users/Nate/Documents/GitHub/CapsClient/x64/Debug/TCPClient.exe");//"C:/Users/Nate/Documents/GitHub/Caps/x64/Release/TCPServerMutithreaded.exe");
+		LPCSTR filePath = "";
 		LPCTSTR createFilePath = TEXT("");
-        //LPWSTR createFilePath = 'C:/Users/Nate/Desktop/test.txt';
+
 
 		HANDLE g_hChildStd_IN_Rd = NULL;
 		HANDLE g_hChildStd_IN_Wr = NULL;

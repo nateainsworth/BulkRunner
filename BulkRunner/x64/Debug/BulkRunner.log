@@ -1,21 +1,17 @@
-﻿  Worker.cpp
-  main.cpp
+﻿  main.cpp
   The contents of <filesystem> are available only with C++17 or later.
-C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(44,9): error C2065: 'rClient_rServer': undeclared identifier
-C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(45,9): error C2143: syntax error: missing ';' before 'break'
-C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(59,49): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(80,34): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(97,41): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
+C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(38,49): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(102,49): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
           with
           [
               _Ty=float
           ]
-C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(105,41): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
+C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(110,49): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
           with
           [
               _Ty=float
           ]
-C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(116,96): warning C4244: 'argument': conversion from '_Ty' to '_Ty', possible loss of data
+C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(121,104): warning C4244: 'argument': conversion from '_Ty' to '_Ty', possible loss of data
           with
           [
               _Ty=float
@@ -24,29 +20,24 @@ C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(116,96): warning C4244
           [
               _Ty=int
           ]
-C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(140,51): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
+C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(145,59): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
           with
           [
               _Ty=float
           ]
-C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(153,51): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
+C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(158,59): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
           with
           [
               _Ty=float
           ]
-C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(166,53): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
+C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(171,61): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
           with
           [
               _Ty=float
           ]
-C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(235,32): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(240,32): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(249,32): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(252,36): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(257,36): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(280,33): warning C4244: 'argument': conversion from 'int' to '_Ty', possible loss of data
+C:\Users\Nate\source\repos\BulkRunner\BulkRunner\main.cpp(298,33): warning C4244: 'argument': conversion from 'int' to '_Ty', possible loss of data
           with
           [
               _Ty=float
           ]
-  Generating Code...
+  BulkRunner.vcxproj -> C:\Users\Nate\source\repos\BulkRunner\x64\Debug\BulkRunner.exe
